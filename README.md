@@ -10,7 +10,7 @@ CloudflareSpeedTest 推送「每5分钟自选优选 IP」获取Cloudflare CDN �
   * Action配置，Actions secrets and variables 添加 CF_API_TOKEN(例如：xxxxx)，CF_ZONE_ID（例如：xxxxx），CF_DNS_NAME（dns.164746.xyz），WECHAT_WEBHOOK（xxxxx）。
 * 接入PUSHPLUS消息通知。[https://www.pushplus.plus/push1.html](https://www.pushplus.plus/push1.html)
 
-## 修改
+## 基于原项目[cf-speed-dns](https://github.com/ZhiXuanWang/cf-speed-dns)修改
 * 改企业微信机器人推送（仅DNSCF）
 * 添加手动执行dns_cf_push工作流
 
