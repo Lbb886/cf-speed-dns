@@ -9,8 +9,8 @@ CF_API_TOKEN    =   os.environ["CF_API_TOKEN"]
 CF_ZONE_ID      =   os.environ["CF_ZONE_ID"]
 CF_DNS_NAME     =   os.environ["CF_DNS_NAME"]
 
-# pushplus_token
-PUSHPLUS_TOKEN  =   os.environ["PUSHPLUS_TOKEN"]
+# 企业微信机器人 Webhook 地址
+WECHAT_WEBHOOK = os.environ["WECHAT_WEBHOOK"]
 
 
 
@@ -68,19 +68,23 @@ def update_dns_record(record_id, name, cf_ip):
             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " ---- MESSAGE: " + str(e))
         return "ip:" + str(cf_ip) + "解析" + str(name) + "失败"
 
+
 # 消息推送
-def push_plus(content):
-    url = 'http://www.pushplus.plus/send'
+def push_wechat(content):
+    url = WECHAT_WEBHOOK
     data = {
-        "token": PUSHPLUS_TOKEN,
-        "title": "IP优选DNSCF推送",
-        "content": content,
-        "template": "markdown",
-        "channel": "wechat"
+        "msgtype": "markdown",
+        "markdown": {
+            "content": f"**IP优选DNS更新推送**\n{content}"
+        }
     }
-    body = json.dumps(data).encode(encoding='utf-8')
     headers = {'Content-Type': 'application/json'}
-    requests.post(url, data=body, headers=headers)
+    response = requests.post(url, json=data, headers=headers)
+
+    if response.status_code == 200:
+        print("推送成功")
+    else:
+        print(f"推送失败: {response.status_code}, {response.text}")
 
 # 主函数
 def main():
@@ -95,7 +99,7 @@ def main():
         dns = update_dns_record(dns_records[index], CF_DNS_NAME, ip_address)
         push_plus_content.append(dns)
 
-    push_plus('\n'.join(push_plus_content))
+    push_wechat('\n'.join(push_plus_content))
 
 if __name__ == '__main__':
     main()
