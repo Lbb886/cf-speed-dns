@@ -11,8 +11,9 @@ CloudflareSpeedTest 推送「每5分钟自选优选 IP」获取Cloudflare CDN �
 * 接入PUSHPLUS消息通知。[https://www.pushplus.plus/push1.html](https://www.pushplus.plus/push1.html)
 
 ## 基于原项目[cf-speed-dns](https://github.com/ZhiXuanWang/cf-speed-dns)修改
-* 改企业微信机器人推送（仅DNSCF）
-* 添加手动执行dns_cf_push工作流
+* 改企业微信机器人推送（仅DNSCF） 2024-11-24
+* 添加手动执行dns_cf_push工作流 2024-11-24
+* 优化dnscf.py代码 2024-11-25
 
 ## 接口请求
 ```javascript
