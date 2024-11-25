@@ -73,9 +73,9 @@ def update_dns_record(record_id, name, cf_ip):
 def push_wechat(content):
     url = WECHAT_WEBHOOK
     data = {
-        "msgtype": "markdown",
-        "markdown": {
-            "content": f"**IP优选DNS更新推送**\n{content}"
+        "msgtype": "text",
+        "text": {
+            "content": content
         }
     }
     headers = {'Content-Type': 'application/json'}
