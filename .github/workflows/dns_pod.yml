@@ -23,5 +23,5 @@ jobs:
           SUB_DOMAIN: ${{ secrets.SUB_DOMAIN }}
           SECRETID: ${{ secrets.SECRETID }}
           SECRETKEY: ${{ secrets.SECRETKEY }}
-          PUSHPLUS_TOKEN: ${{ secrets.WECHAT_WEBHOOK }}
+          WECHAT_WEBHOOK: ${{ secrets.WECHAT_WEBHOOK }}
         run: python dnspod.py
