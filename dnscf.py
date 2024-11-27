@@ -75,6 +75,7 @@ def update_dns_record(record_id, name, cf_ip):
 def push_wechat(content):
     url = WECHAT_WEBHOOK
     data = {
+        "title": "IP优选DNSCF推送",
         "msgtype": "text",
         "text": {
             "content": content
