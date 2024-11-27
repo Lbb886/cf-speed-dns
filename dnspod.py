@@ -102,4 +102,4 @@ if __name__ == '__main__':
         dns = change_dns(cloud, info[index]["recordId"], ip_address)
         pod_content.append(dns)
 
-    pushplus('\n'.join(pod_content))
+    push_wechat('\n'.join(pod_content))
