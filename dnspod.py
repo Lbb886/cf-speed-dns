@@ -15,8 +15,8 @@ SUB_DOMAIN = os.environ['SUB_DOMAIN']
 SECRETID = os.environ["SECRETID"]
 SECRETKEY = os.environ["SECRETKEY"]
 
-# pushplus_token
-PUSHPLUS_TOKEN = os.environ["PUSHPLUS_TOKEN"]
+# 企业微信机器人 Webhook 地址
+WECHAT_WEBHOOK = os.environ["WECHAT_WEBHOOK"]
 
 
 def get_cf_speed_test_ip(timeout=10, max_retries=5):
@@ -41,7 +41,7 @@ def build_info(cloud):
         def_info = []
         for record in ret["data"]["records"]:
             info = {"recordId": record["id"], "value": record["value"]}
-            if record["line"] == "默认":
+            if record["line"] == "境内":
                 def_info.append(info)
         print(f"build_info success: ---- Time: " + str(
             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " ---- ip：" + str(def_info))
@@ -54,7 +54,7 @@ def build_info(cloud):
 
 def change_dns(cloud, record_id, cf_ip):
     try:
-        cloud.change_record(DOMAIN, record_id, SUB_DOMAIN, cf_ip, "A", "默认", 600)
+        cloud.change_record(DOMAIN, record_id, SUB_DOMAIN, cf_ip, "A", "境内", 600)
         print(f"change_dns success: ---- Time: " + str(
             time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())) + " ---- ip：" + str(cf_ip))
         return "ip:" + str(cf_ip) + "解析" + str(SUB_DOMAIN) + "." + str(DOMAIN) + "成功"
@@ -66,18 +66,22 @@ def change_dns(cloud, record_id, cf_ip):
         return "ip:" + str(cf_ip) + "解析" + str(SUB_DOMAIN) + "." + str(DOMAIN) + "失败"
 
 
-def pushplus(content):
-    url = 'http://www.pushplus.plus/send'
+# 消息推送
+def push_wechat(content, title="IP优选DNSPOD推送"):
+    url = WECHAT_WEBHOOK
     data = {
-        "token": PUSHPLUS_TOKEN,
-        "title": "IP优选DNSPOD推送",
-        "content": content,
-        "template": "markdown",
-        "channel": "wechat"
+        "msgtype": "text",
+        "text": {
+            "content": f"{title}\n{content}"
+        }
     }
-    body = json.dumps(data).encode(encoding='utf-8')
     headers = {'Content-Type': 'application/json'}
-    requests.post(url, data=body, headers=headers)
+    response = requests.post(url, json=data, headers=headers)
+
+    if response.status_code == 200:
+        print("推送成功")
+    else:
+        print(f"推送失败: {response.status_code}, {response.text}")
 
 
 if __name__ == '__main__':
@@ -91,11 +95,11 @@ if __name__ == '__main__':
     ip_addresses_str = get_cf_speed_test_ip()
     ip_addresses = ip_addresses_str.split(',')
 
-    pushplus_content = []
+    pod_content = []
     # 遍历 IP 地址列表
     for index, ip_address in enumerate(ip_addresses):
         # 执行 DNS 变更
         dns = change_dns(cloud, info[index]["recordId"], ip_address)
-        pushplus_content.append(dns)
+        pod_content.append(dns)
 
-    pushplus('\n'.join(pushplus_content))
+    pushplus('\n'.join(pod_content))
