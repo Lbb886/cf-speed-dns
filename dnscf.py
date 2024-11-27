@@ -94,7 +94,7 @@ def main():
     ip_addresses_str = get_cf_speed_test_ip()
     ip_addresses = ip_addresses_str.split(',')
     dns_records = get_dns_records(CF_DNS_NAME)
-    push_plus_content = []
+    cf_content = []
     # 遍历 IP 地址列表
     for index, ip_address in enumerate(ip_addresses):
         # 执行 DNS 变更
