@@ -72,13 +72,12 @@ def update_dns_record(record_id, name, cf_ip):
 
 
 # 消息推送
-def push_wechat(content):
+def push_wechat(content, title="IP优选DNSCF推送"):
     url = WECHAT_WEBHOOK
     data = {
-        "title": "IP优选DNSCF推送",
         "msgtype": "text",
         "text": {
-            "content": content
+            "content": f"{title}\n{content}"
         }
     }
     headers = {'Content-Type': 'application/json'}
@@ -100,9 +99,9 @@ def main():
     for index, ip_address in enumerate(ip_addresses):
         # 执行 DNS 变更
         dns = update_dns_record(dns_records[index], CF_DNS_NAME, ip_address)
-        push_plus_content.append(dns)
+        cf_content.append(dns)
 
-    push_wechat('\n'.join(push_plus_content))
+    push_wechat('\n'.join(cf_content))
 
 if __name__ == '__main__':
     main()
