@@ -23,7 +23,7 @@ def get_cf_speed_test_ip(timeout=10, max_retries=5):
     for attempt in range(max_retries):
         try:
             # 发送 GET 请求，设置超时
-            response = requests.get('https://ip.164746.xyz/ipTop.html', timeout=timeout)
+            response = requests.get('https://gh.juz.us.kg/ips/ip.txt', timeout=timeout)
 
             # 检查响应状态码
             if response.status_code == 200:
@@ -94,10 +94,11 @@ if __name__ == '__main__':
     # 获取最新优选IP
     ip_addresses_str = get_cf_speed_test_ip()
     ip_addresses = ip_addresses_str.split(',')
+    first_two = ip_addresses[:2]
 
     pod_content = []
     # 遍历 IP 地址列表
-    for index, ip_address in enumerate(ip_addresses):
+    for index, ip_address in enumerate(first_two):
         # 执行 DNS 变更
         dns = change_dns(cloud, info[index]["recordId"], ip_address)
         pod_content.append(dns)
