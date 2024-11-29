@@ -14,6 +14,7 @@ CloudflareSpeedTest 推送「每5分钟自选优选 IP」获取Cloudflare CDN �
 * 改企业微信机器人推送（DNSCF）  2024-11-24 （DNSPOD） 2024-11-27
 * 添加手动执行dns_cf_push工作流 2024-11-24  dns_pod_push  2024-11-27
 * 优化dnscf.py代码 2024-11-25
+* 接口改成自建接口，代码适配 2024-11-29
 
 ## 接口请求
 ```javascript
